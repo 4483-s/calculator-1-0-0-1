@@ -3,6 +3,10 @@
   padding: 0;
   box-sizing: border-box;
 }
+button {
+  background-color: pink;
+  border-radius: 0.8em;
+}
 .container {
   max-width: 60%;
   background-color: green;
