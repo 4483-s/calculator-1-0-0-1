@@ -12,12 +12,14 @@ btns.forEach((btn) => {
     }
   });
 });
-const re = new RegExp(/[-/*+]/);
+const re = new RegExp(/[-/*+=]/);
 function getDigit(content) {
   if (operation === "0") {
-    operation = content;
+    if (content === ".") {
+      operation += content;
+    } else operation = content;
   } else {
-    if (operation.includes(".") && content === ".") {
+    if (false && content === ".") {
       return;
     } else {
       operation += content;
@@ -34,9 +36,13 @@ function fn(content) {
     operation = "0";
     display.textContent = operation;
   }
-  // minus
-  else if (content.match(re)) {
-    if (operationSplited[opLength - 1].match(re)) {
+  //
+  else if (content === "+/-") {
+    operation = operationSplited[0] * -1 + "";
+  } else if (content === "%") {
+    operation = operationSplited * 0.01 + "";
+  } else if (content.match(re)) {
+    if (operationSplited.filter((x) => x !== "").length === 2) {
       operation = operation.replace(operation.at(-2), content);
     }
     //
@@ -48,14 +54,18 @@ function fn(content) {
           +operationSplited[0] + +operationSplited[2] + ` ${content} `;
       } else if (operationSplited[1] === "/") {
         operation = operationSplited[0] / operationSplited[2] + ` ${content} `;
-      } else {
+      } else if (operationSplited[1] === "*") {
         operation = operationSplited[0] * operationSplited[2] + ` ${content} `;
       }
     } else {
       operation += ` ${content} `;
     }
-    display.textContent = operation;
+
+    if (operation.includes("=")) {
+      operation = operation.slice(0, -3);
+    }
   }
+  display.textContent = operation;
 
   console.log(operation);
 }
